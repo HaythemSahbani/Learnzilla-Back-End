@@ -1,0 +1,12 @@
+rest\Application.class
+hibernate\can\Antworten.class
+hibernate\can\BenutzerFrage.class
+hibernate\can\Fragen.class
+rest\LearnzillaRestController.class
+hibernate\can\Benutzer.class
+hibernate\can\FragenAntwortenMapping.class
+hibernate\can\Test.class
+hibernate\can\Kategorie.class
+logic\BusinessLogic.class
+hibernate\can\DataManipulation.class
+hibernate\can\Zitate.class

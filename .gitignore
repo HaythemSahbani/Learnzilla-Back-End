@@ -26,32 +26,19 @@ local.properties
 .loadpath
 .recommenders
 
-# Eclipse Core
-.project
 
 # External tool builders
 .externalToolBuilders/
 
-# Locally stored "Eclipse launch configurations"
-*.launch
-
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
 
 # CDT-specific (C/C++ Development Tooling)
 .cproject
-
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
 
 # Java annotation processor (APT)
 .factorypath
 
 # PDT-specific (PHP Development Tools)
 .buildpath
-
-# sbteclipse plugin
-.target
 
 # Tern plugin
 .tern-project
@@ -65,3 +52,4 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+/target/

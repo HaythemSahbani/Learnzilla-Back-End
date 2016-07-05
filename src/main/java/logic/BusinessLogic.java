@@ -1,10 +1,15 @@
 package logic;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import hibernate.can.Benutzer;
+import rest.LearnzillaRestController;
 
 public class BusinessLogic {
+	
+	private static final Logger log = Logger.getLogger(BusinessLogic.class.getName());
 	
 	//Liefert objekt mit der frage und den antworten
 	//public static FrAntwortObject getQuestionFromDB(UserObject userObject, int schwierigkeitsgrad, int kategorie, int fragentyp);
@@ -15,8 +20,16 @@ public class BusinessLogic {
 	}
 	
 	//pruefen ob user existiert, falls nicht, neu erstellen
-	public static Benutzer loginUser(String username, String password){
-		Benutzer benutzer = new Benutzer();
+	public static Benutzer loginUser(String username, String password) {
+		
+		Benutzer benutzer;
+		try {
+			benutzer = Benutzer.login(username, password);
+		} catch (Exception e) {
+			log.log(Level.SEVERE, "Login fehlgeschlagen!");;
+			benutzer = null;
+		}
+		
 		return benutzer;
 	}
 	
