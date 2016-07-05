@@ -116,14 +116,14 @@ public class Benutzer {
 		Query query2 = session.createQuery(hql2);
 		query2.setParameter("bnid", currentUser.benutzerid);
 		
-		//Query ausführen
+		//Query ausfï¿½hren
 		int result2 = query2.executeUpdate();
 		System.out.println(result2);
 		
-		//Commit auf der Datenbank ausführen
+		//Commit auf der Datenbank ausfï¿½hren
 		t.commit();
 		
-		//Datenbank schließen
+		//Datenbank schlieï¿½en
 		DataManipulation.closeConnection(session);
 		//session.close();
 		
