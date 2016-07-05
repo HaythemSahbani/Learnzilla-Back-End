@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: sei.learnzilla.backend
-Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Michael
-Implementation-Vendor-Id: sei.learnzilla.backend
-Build-Jdk: 1.8.0_92
-Created-By: Maven Integration for Eclipse
-Implementation-Vendor: Pivotal Software, Inc.
-
