@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import hibernate.can.Benutzer;
+import models.IBenutzer;
 import rest.LearnzillaRestController;
 
 public class BusinessLogic {
@@ -15,7 +16,7 @@ public class BusinessLogic {
 	//public static FrAntwortObject getQuestionFromDB(UserObject userObject, int schwierigkeitsgrad, int kategorie, int fragentyp);
 	
 	//pruefe ob antwort richtig ist, gebe entsprechend geaendertes userobjekt mit
-	public static Benutzer checkCorrectAnswer(){
+	public static IBenutzer checkCorrectAnswer(){
 		return null;
 	}
 	
