@@ -1,7 +1,6 @@
 package rest;
 
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import hibernate.can.Benutzer;
 import logic.BusinessLogic;
+import models.IBenutzer;
+import models.IFrAntwort;
 
 @RestController
 public class LearnzillaRestController {
@@ -21,22 +21,23 @@ public class LearnzillaRestController {
 	private static final Logger log = Logger.getLogger(LearnzillaRestController.class.getName());
 
 	/**
-	 * Diese Methode loggt einen Benutzer ein und gibt ihn als Benutzer-Objekt zurueck.
+	 * Diese Methode loggt einen Benutzer ein und gibt ihn als Benutzer-Objekt
+	 * zurueck.
 	 * 
 	 * @param username
 	 * @param password
-	 * @return Benutzer or null 
+	 * @return Benutzer or null
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Benutzer> login(@RequestParam(value = "user") String username,
+	public ResponseEntity<IBenutzer> login(@RequestParam(value = "user") String username,
 			@RequestParam(value = "password") String password) {
 
-		log.info("login mit user: [" + username + "] and password [" + password + "]"); 
-		
-		Benutzer benutzer = BusinessLogic.loginUser(username, password);
+		log.info("login mit user: [" + username + "] and password [" + password + "]");
 
-		return new ResponseEntity<Benutzer>(benutzer, HttpStatus.OK);
+		IBenutzer benutzer = BusinessLogic.loginUser(username, password);
+
+		return new ResponseEntity<IBenutzer>(benutzer, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -52,35 +53,36 @@ public class LearnzillaRestController {
 
 	@RequestMapping(value = "/userinfos", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<Benutzer> getBenutzerInfos(@RequestParam(value = "benutzerId") int benutzerId) {
+	public ResponseEntity<IBenutzer> getBenutzerInfos(@RequestParam(value = "benutzerId") int benutzerId) {
 
 		log.info("get userinfos mit userId: [" + benutzerId + "]");
 
-		Benutzer benutzer = BusinessLogic.getBenutzerInfos(benutzerId);
+		IBenutzer iBenutzer = BusinessLogic.getBenutzerInfos(benutzerId);
 
-		return new ResponseEntity<Benutzer>(benutzer, HttpStatus.OK);
+		return new ResponseEntity<IBenutzer>(iBenutzer, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/usersonline", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<List<Benutzer>> getOnlineBenutzer() {
+	public ResponseEntity<List<IBenutzer>> getOnlineBenutzer() {
 
 		log.info("getOnlineBenutzer...");
 
-		List<Benutzer> benutzerOnlineList = BusinessLogic.getUsersOnline();
+		List<IBenutzer> benutzerOnlineList = BusinessLogic.getUsersOnline();
 
-		return new ResponseEntity<List<Benutzer>>(benutzerOnlineList, HttpStatus.OK);
+		return new ResponseEntity<List<IBenutzer>>(benutzerOnlineList, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/question", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<String> getQuestion(@RequestParam(value = "userId") String userId) {
+	public ResponseEntity<IFrAntwort> getQuestion(@RequestParam(value = "benutzerId") int benutzerId,
+			@RequestParam(value = "kategorie") int kategorie) {
 
-		log.info("get question mit userId: [" + userId + "]");
+		log.info("get question mit userId: [" + benutzerId + "]");
 
-		//TODO do it!
+		IFrAntwort iFrAntwort = BusinessLogic.getQuestionFromDB(benutzerId, kategorie);
 
-		return new ResponseEntity<String>("Hello World", HttpStatus.OK);
+		return new ResponseEntity<IFrAntwort>(iFrAntwort, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/answer/{userid}", method = RequestMethod.GET)
@@ -90,11 +92,21 @@ public class LearnzillaRestController {
 
 		log.info("check frageId: [" + frageId + "], antwortId: [" + antwortId + "]");
 
-		// TODO merke dass user die frage beantwortet hat, und gebe zurück ob falsch/richtig!
-		
-		
+		// TODO merke dass user die frage beantwortet hat, und gebe zurück ob
+		// falsch/richtig!
 
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/zitat", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<String> getZitat() {
+
+		log.info("get zitat");
+
+		String zitat = BusinessLogic.getZitat();
+
+		return new ResponseEntity<String>(zitat, HttpStatus.OK);
 	}
 
 }

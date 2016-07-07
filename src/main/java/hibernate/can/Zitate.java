@@ -24,6 +24,8 @@ public class Zitate {
 	public void setZitateId(int zitateId) {
 		this.zitateId = zitateId;
 	}
+	
+	//DB Befehl einbauen
 	public String getZitate() {
 		return zitate;
 	}

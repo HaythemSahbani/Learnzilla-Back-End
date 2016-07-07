@@ -17,7 +17,15 @@ public class FragenAntwortenMapping {
 	@Column(name = "fk_antwort")
 	private int fk_antwort;
 	
+	@Column(name = "is_correct")
+	private boolean is_correct;
 	
+	public boolean isIs_correct() {
+		return is_correct;
+	}
+	public void setIs_correct(boolean is_correct) {
+		this.is_correct = is_correct;
+	}
 	public int getFk_frage() {
 		return fk_frage;
 	}

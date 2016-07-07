@@ -12,9 +12,10 @@ import org.hibernate.cfg.Configuration;
 public class DataManipulation {
 	
 
-	//Hier wird die Connection geöffnet und eine Session zurückgegeben
-	public static Session getConnection() throws Exception
+	//Hier wird die Connection geï¿½ffnet und eine Session zurï¿½ckgegeben
+	public static Session getConnection()
 	{
+		try{
 		System.out.println("Connection wird hergestellt");
 		Configuration cfg =new Configuration();
 		cfg.configure("hibernate.learnzilla.cfg.xml"); //populates the data of the configuration file
@@ -24,15 +25,28 @@ public class DataManipulation {
 		
 		//creating session object
 		Session session=factory.openSession();
+		return session;
+		}
+		catch (Exception e)
+		{
+			
+		}
 		
-		return session;		
+				return null;
 	}
 	
 	// Hier wird die Connection zur Datenbank geschlossen
 	public static void closeConnection(Session session)
 	{
-		System.out.println("Connection wird geschlossen");
-		session.close();
+		try{
+			System.out.println("Connection wird geschlossen");
+			session.close();
+		}
+		catch (Exception e)
+		{
+			
+		}
+
 	}
 	
 }
