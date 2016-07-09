@@ -18,7 +18,7 @@ public class BenutzerFrage {
 
 	@Id @GeneratedValue
 	@Column(name = "benfragid")
-	private int benfrageId;
+	private int benfragid;
 	
 	@Column(name = "fk_benutzer")
 	private int fk_benutzer;
@@ -30,11 +30,11 @@ public class BenutzerFrage {
 	private boolean is_done;
 	
 	
-	public int getBenfrageId() {
-		return benfrageId;
+	public int getBenfragid() {
+		return benfragid;
 	}
-	public void setBenfrageId(int benfrageId) {
-		this.benfrageId = benfrageId;
+	public void setBenfragid(int benfrageId) {
+		this.benfragid = benfrageId;
 	}
 	public int getFk_benutzer() {
 		return fk_benutzer;
@@ -53,21 +53,23 @@ public class BenutzerFrage {
 	}
 	
 	//Wenn eine Frage richtig beantwortet wurde
-	public void setIs_done(int benutzerid) {
+	public void setIs_done(int benutzerid, int frageid) {
+		
 		Session session;
 		// Connection erstellen
 		session = DataManipulation.getConnection();
 
 		//Transaction erstellen
 		Transaction t= session.beginTransaction();
+		
+		
 
 		//Neue HQL Abfrage um den User als Online zu markieren
-		String hql2 = "UPDATE Benutzer b SET b.is_done = TRUE WHERE b.benutzerid = :bnid";
-		Query query2 = session.createQuery(hql2);
-		query2.setParameter("bnid", benutzerid);
-
+		Query query = session.createSQLQuery("INSERT INTO BenutzerFrage (fkbenutzer, fkfrage, is_done) VALUES (:fkben, :fkfrag, TRUE))");
+		query.setParameter("fkben", benutzerid);
+		query.setParameter("fkfrag", frageid);
+		query.executeUpdate();
 		//DB Abfrage ausführen
-		query2.executeUpdate();
 
 		//Commit auf der Datenbank ausf�hren
 		t.commit();
@@ -75,5 +77,7 @@ public class BenutzerFrage {
 		//Datenbank schlie�en
 		DataManipulation.closeConnection(session);
 	}
+	
+	
 	
 }

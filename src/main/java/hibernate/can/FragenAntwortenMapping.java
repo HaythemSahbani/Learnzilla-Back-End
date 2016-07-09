@@ -1,10 +1,16 @@
 package hibernate.can;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 @Entity
 @Table(name = "fragenantwortenmapping")
@@ -19,8 +25,8 @@ public class FragenAntwortenMapping {
 	
 	@Column(name = "is_correct")
 	private boolean is_correct;
-	
-	public boolean isIs_correct() {
+
+	public boolean getIs_correct() {
 		return is_correct;
 	}
 	public void setIs_correct(boolean is_correct) {
@@ -38,4 +44,7 @@ public class FragenAntwortenMapping {
 	public void setFk_antwort(int fk_antwort) {
 		this.fk_antwort = fk_antwort;
 	}
+	
+	//GetCorrectAnswersfromFrageAntwortenMapping
 }
+

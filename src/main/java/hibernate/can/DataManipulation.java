@@ -1,6 +1,8 @@
 package hibernate.can;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,9 +10,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import logic.BusinessLogic;
+
 
 public class DataManipulation {
 	
+	private static final Logger log = Logger.getLogger(DataManipulation.class.getName());
 
 	//Hier wird die Connection ge�ffnet und eine Session zur�ckgegeben
 	public static Session getConnection()
@@ -21,6 +26,7 @@ public class DataManipulation {
 		cfg.configure("hibernate.learnzilla.cfg.xml"); //populates the data of the configuration file
 		
 		//creating session factory object
+		@SuppressWarnings("deprecation")
 		SessionFactory factory = cfg.buildSessionFactory();
 		
 		//creating session object
@@ -29,7 +35,7 @@ public class DataManipulation {
 		}
 		catch (Exception e)
 		{
-			
+			log.log(Level.SEVERE, "Datenbank Connection konnte nicht hergestellt werden");
 		}
 		
 				return null;
@@ -44,7 +50,7 @@ public class DataManipulation {
 		}
 		catch (Exception e)
 		{
-			
+			log.log(Level.SEVERE, "Datenbank Connection konnte nicht geschlossen werden");
 		}
 
 	}

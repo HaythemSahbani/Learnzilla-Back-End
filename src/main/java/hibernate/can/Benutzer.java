@@ -1,6 +1,8 @@
 package hibernate.can;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +14,13 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import logic.BusinessLogic;
 import models.IBenutzer;
 
 @Entity
 @Table(name = "benutzer")
 public class Benutzer implements IBenutzer {
+	private static final Logger log = Logger.getLogger(Benutzer.class.getName());
 
 	@Id
 	@GeneratedValue
@@ -68,31 +72,6 @@ public class Benutzer implements IBenutzer {
 		this.passwort = Password;
 	}
 
-	/*
-	@Override
-	public boolean getIs_online() {
-		
-		Session session;
-		session = DataManipulation.getConnection();
-		Transaction t = session.beginTransaction();
-
-		Benutzer currentUser = new Benutzer();
-
-		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid");
-		query.setParameter("bid", this.getBenutzerid());
-		
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
-		currentUser = list.get(0);
-
-		boolean is_online = currentUser.is_online;
-		DataManipulation.closeConnection(session);
-
-		return is_online;
-	}
-	*/
 
 	@Override
 	public void setIs_online(boolean is_online) {
@@ -103,23 +82,27 @@ public class Benutzer implements IBenutzer {
 	public int getFettigkeitsgrad() {
 		Session session;
 		session = DataManipulation.getConnection();
+		try{
 		Transaction t = session.beginTransaction();
 
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid");
-		query.setParameter("bid", this.getBenutzerid());
-		// List results = query.list();
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid")
+				.setParameter("bid", this.getBenutzerid()).list();
+		
 		currentUser = list.get(0);
 
 		int fettigkeitsgrad = currentUser.fettigkeitsgrad;
 		DataManipulation.closeConnection(session);
 
 		return fettigkeitsgrad;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Fettigkeitsgrad konnte nicht ermittelt werden");
+		}
+		return 0;
 	}
 
 	@Override
@@ -128,6 +111,7 @@ public class Benutzer implements IBenutzer {
 		// Connection erstellen
 		session = DataManipulation.getConnection();
 
+		try{
 		// Transaction erstellen
 		Transaction t = session.beginTransaction();
 
@@ -135,12 +119,8 @@ public class Benutzer implements IBenutzer {
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid");
-		query.setParameter("bnid", this.getBenutzerid());
-		
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid")
+				.setParameter("bnid", this.getBenutzerid()).list();
 
 		// BenutzerObjekt in Ram speichern
 		currentUser = list.get(0);
@@ -160,35 +140,42 @@ public class Benutzer implements IBenutzer {
 
 		// Datenbank schlie�en
 		DataManipulation.closeConnection(session);
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Fettigkeitsrad konnte nicht gesetzt werden");
+		}
+		 
 	}
 
 	@Override
 	public int getHighscore() {
 		Session session;
 		session = DataManipulation.getConnection();
+		try{
 		Transaction t = session.beginTransaction();
 
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid");
-		query.setParameter("bid", this.getBenutzerid());
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid")
+				.setParameter("bid", this.getBenutzerid()).list();
+		
 		currentUser = list.get(0);
 
 		int highscore = currentUser.highscore;
 		DataManipulation.closeConnection(session);
 
 		return highscore;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Highscore konnte nicht gesetzt werden");
+		}
+		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see hibernate.can.IBenutzer#setHighscore(int)
-	 */
+
 	@Override
 	public void setHighscore(int highscore) {
 
@@ -196,6 +183,7 @@ public class Benutzer implements IBenutzer {
 		// Connection erstellen
 		session = DataManipulation.getConnection();
 
+		try{
 		// Transaction erstellen
 		Transaction t = session.beginTransaction();
 
@@ -203,21 +191,15 @@ public class Benutzer implements IBenutzer {
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid");
-		query.setParameter("bnid", this.getBenutzerid());
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid")
+				.setParameter("bnid", this.getBenutzerid()).list();		
 		
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
-
 		// BenutzerObjekt in Ram speichern
 		currentUser = list.get(0);
 
 		// Neue HQL Abfrage um den User als Online zu markieren
-		String hql2 = "UPDATE Benutzer b SET b.highscore = hscore WHERE b.benutzerid = :bnid";
-		query.setParameter("hscore", highscore);
-		Query query2 = session.createQuery(hql2);
-		query2.setParameter("bnid", currentUser.benutzerid);
+		Query query2 = session.createQuery("UPDATE Benutzer b SET b.highscore = hscore WHERE b.benutzerid = :bnid")
+				.setParameter("hscore", highscore).setParameter("bnid", currentUser.benutzerid);
 
 		// Query ausf�hren
 		int result2 = query2.executeUpdate();
@@ -228,6 +210,12 @@ public class Benutzer implements IBenutzer {
 
 		// Datenbank schlie�en
 		DataManipulation.closeConnection(session);
+		}
+		catch(Exception e)
+		{
+			log.log(Level.SEVERE, "Highscore konnte nicht gesetzt werden");
+		}
+		
 	}
 
 	public static Benutzer login(String Benutzername, String passwort) {
@@ -235,23 +223,22 @@ public class Benutzer implements IBenutzer {
 		// Connection erstellen
 		session = DataManipulation.getConnection();
 
+		try{
 		// Transaction erstellen
 		Transaction t = session.beginTransaction();
 
 		// neues Benutzerobjekt
 		Benutzer currentUser = new Benutzer();
 
+		session.clear();
 		// Neue HQL Abfrage
-		//----------------!!!!!!!!!-------------------------------
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzername =:bname");
-		query.setParameter("bname", Benutzername);
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
 
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzername = :bname")
+				.setString("bname", Benutzername).list();
+				
 		// BenutzerObjekt in Ram speichern
 		currentUser = list.get(0);
-		System.out.println(list.get(0).getBenutzername().toString());
+		System.out.println(currentUser.benutzername.toString());
 
 		// Neue HQL Abfrage um den User als Online zu markieren
 		String hql2 = "UPDATE Benutzer b SET b.is_online = TRUE WHERE b.benutzerid = :bnid";
@@ -270,6 +257,12 @@ public class Benutzer implements IBenutzer {
 		// session.close();
 
 		return currentUser;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Benutzer konnte nicht eingeloggt werden");
+		}
+		return null;
 	}
 
 	public void logout() {
@@ -277,6 +270,7 @@ public class Benutzer implements IBenutzer {
 		// Connection erstellen
 		session = DataManipulation.getConnection();
 
+		try{
 		// Transaction erstellen
 		Transaction t = session.beginTransaction();
 
@@ -284,12 +278,8 @@ public class Benutzer implements IBenutzer {
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid");
-		query.setParameter("bnid", currentUser.getBenutzerid());
-		// List results = query.list();
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bnid")
+				.setParameter("bnid", this.benutzerid).list();
 
 		// BenutzerObjekt in Ram speichern
 		currentUser = list.get(0);
@@ -309,6 +299,12 @@ public class Benutzer implements IBenutzer {
 		// Datenbank schlie�en
 		DataManipulation.closeConnection(session);
 		// session.close();
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Benutzer konnte nicht ausgeloggt werden");
+		}
+		
 	}
 
 	public static Benutzer registration() {
@@ -318,34 +314,43 @@ public class Benutzer implements IBenutzer {
 	public static Benutzer getBenutzerObjekt(int benutzerID) {
 		Session session;
 		session = DataManipulation.getConnection();
+		try{
 		Transaction t = session.beginTransaction();
 
 		Benutzer currentUser = new Benutzer();
 
 		// Neue HQL Abfrage
-		Query query = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid");
-		query.setParameter("bid", benutzerID);
-
-		// Die Ausgabe des Querys wird in eine Liste von Benutzern gespeichert
-		// (falls mehrere zutreffen)
-		List<Benutzer> list = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> list = session.createQuery("FROM Benutzer b WHERE b.benutzerid =:bid")
+				.setParameter("bid", benutzerID).list();
 		currentUser = list.get(0);
 
 		DataManipulation.closeConnection(session);
 
 		return currentUser;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Benutzerobjekt konnte nicht zurück gegeben werden");
+		}
+		return null;
 	}
 
 	public static List<Benutzer> getBenutzerListOnline() {
 		Session session;
 		session = DataManipulation.getConnection();
+		try{
 		Transaction t = session.beginTransaction();
-		Query query = session.createQuery("FROM Benutzer b WHERE b.is_online = TRUE");
-		List<Benutzer> benonlineListe = session.createCriteria(Benutzer.class).list();
+		List<Benutzer> benonlineListe =session.createQuery("FROM Benutzer b WHERE b.is_online = TRUE").list();
 
 		DataManipulation.closeConnection(session);
 
 		return benonlineListe;
+		}
+		catch (Exception e)
+		{
+			log.log(Level.SEVERE, "Benutzerliste konnte nicht erstellt werden");
+		}
+		return null;
 	}
 
 }
